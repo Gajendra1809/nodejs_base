@@ -1,10 +1,14 @@
-import express from 'express'
+import { app } from "./app.js";
+import connectDB from "./db/db.js"; 
 
-const app = express();
-app.get("/", (req, res) => {
-    res.send("Hello World");
-})
+connectDB()
+    .then(() => {
+        console.log("Connected to MongoDB");
+        app.listen(3000,()=>{
+            console.log("Listening on port 3000");
+        })
+    })
+    .catch((err) => {
+        console.log(err, "Database connection error");
+    });
 
-app.listen(3000,()=>{
-    console.log("Listening on port 3000");
-})
