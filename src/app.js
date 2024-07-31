@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import "dotenv/config"
 
 import userRouter from "./routes/user.routes.js";
 import adminRouter from "./routes/admin.routes.js";
