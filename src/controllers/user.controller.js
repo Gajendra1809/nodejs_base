@@ -2,6 +2,7 @@
 import jsonwebtoken  from "jsonwebtoken";
 import User from "../models/user.model.js";
 import { success, failure } from "../utils/response.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const register = async (req, res) => {
     try {
@@ -10,6 +11,7 @@ export const register = async (req, res) => {
             email: req.body.email,
             password: req.body.password,
         });
+        sendEmail(user.email, "Registration Successful", `<h1>Hello ${user.name}</h1>`)
         success(res, "User created successfully", user)
     } catch (error) {
         failure(res, "Something went wrong")
@@ -26,7 +28,7 @@ export const login = async (req, res) => {
        
         success(res, "User logged in successfully", token)
     } catch (error) {
-        failure(res, "Something went wrong")
+        failure(res, error.message)
     }
 };
 
@@ -34,7 +36,7 @@ export const logout = (req, res) => {
     try {
         success(res, "User logged out successfully")
     } catch (error) {
-        failure(res, "Something went wrong")
+        failure(res, error.message)
     }
 }
 
@@ -56,9 +58,10 @@ export const updateUser = async (req, res) => {
         }
         success(res, "User updated successfully", user)
     } catch (error) {
-        failure(res, "Something went wrong")
+        failure(res, error.message)
     }
 }
+
 export const deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
@@ -67,6 +70,6 @@ export const deleteUser = async (req, res) => {
         }
         success(res, "User deleted successfully", user)
     } catch (error) {
-        failure(res, "Something went wrong")
+        failure(res, error.message)
     }
 }
