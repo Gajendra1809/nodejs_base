@@ -14,7 +14,7 @@ export const register = async (req, res) => {
         sendEmail(user.email, "Registration Successful", `<h1>Hello ${user.name}</h1>`)
         success(res, "User created successfully", user)
     } catch (error) {
-        failure(res, "Something went wrong")
+        failure(res, error.message)
     }
 };
 
