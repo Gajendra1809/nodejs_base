@@ -13,13 +13,29 @@ export const getAllPosts = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
+        const image = req.file ? req.file.filename : "";
+
         const post = await Post.create({
             title: req.body.title,
             content: req.body.content,
-            user_id: req.body.user_id
+            image: image,
+            user_id: req.user._id
         });
         success(res, "Post created successfully", post)
     } catch (error) {
         failure(res, error.message)
     }
 }
+
+export const deletePost = async (req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id);
+        if(!post) {
+            failure(res, "Post not found")
+        }
+        success(res, "Post deleted successfully", post)
+    } catch (error) {
+        failure(res, error.message)
+    }
+}
+
